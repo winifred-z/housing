@@ -4,6 +4,7 @@ I used PostgreSQL to run queries + pgAdmin 4 as my server.
 I cleaned up duplicate emails from ‘persons_data’ table and create a new table ‘persons’ and did the same with names in ‘majors_data’, which I stored in ‘majors’, keeping the first occurrences for both tables. I included the csv files of the unused data (duplicate occurrences for persons_data and major_data in the files persons_duplicates and majors_duplicates respectively). 
 
 Example query:
+```
 CREATE TABLE persons AS
 WITH CTE AS(
 	SELECT *,
@@ -12,9 +13,10 @@ WITH CTE AS(
 	FROM persons_data
 )
 SELECT email FROM CTE WHERE RowNumber = 1;
-
+```
 
 My query:
+```
 CREATE TABLE housing_table AS
 SELECT p.personId, CONCAT(firstname, ' ', lastname) as name, 
 	email, dob,
@@ -29,6 +31,7 @@ LEFT JOIN majors_table m ON mjr = m.name
 LEFT JOIN occupancy_data o ON p.personId = o.personId
 LEFT JOIN inventory_data i ON o.roomName = i.roomName AND o.bedName = i.bedName
 GROUP BY p.personId, firstname, lastname, email, dob, address, i.bedId;
+```
 
 I did not include ‘zip’ column in final table. USPS has ZipCodeLookup API (https://www.usps.com/business/web-tools-apis/address-information-api.html) or API from SmartyStreets (https://www.smarty.com/docs/cloud/us-zipcode-api) or ZipCodeAPI (https://www.zipcodeapi.com/API#locToZips).
 I could query the API w/Python, which returns responses as JSON data, format the data with pandas, and either update the table with psycopg2 (PostgreSQL adapter) or manually import the column in my server. 
