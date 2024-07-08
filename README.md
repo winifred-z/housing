@@ -1,7 +1,7 @@
 README: 
 I used PostgreSQL to run queries + pgAdmin 4 as my server. 
 
-I cleaned up duplicate emails from ‘persons_data’ table and create a new table ‘persons’ and did the same with names in ‘majors_data’, which I stored in ‘majors’, keeping the first occurrences for both tables. I included the csv files of the unused data (duplicate occurrences for persons_data and major_data in the files persons_duplicates and majors_duplicates respectively). 
+I cleaned up duplicate emails from ‘persons_data’ table and create a new table ‘persons’ and did the same with names in ‘majors_data’, which I stored in ‘majors’, keeping the first occurrences for both tables. To preserve the order of the rows, I added a rownumber column to the original tables and filtered the first occurences with the following query: 
 
 Example query:
 ```
@@ -9,11 +9,12 @@ CREATE TABLE persons AS
 WITH CTE AS(
 	SELECT *,
 	ROW_NUMBER() OVER(PARTITION BY email
-	ORDER BY(SELECT NULL)) AS RowNumber
+	ORDER BY rownum) AS RowNumber
 	FROM persons_data
 )
-SELECT email FROM CTE WHERE RowNumber = 1;
+SELECT * FROM CTE WHERE RowNumber = 1;
 ```
+I included the csv files of the unused data (duplicate occurrences for persons_data and major_data in the files persons_duplicate and majors_duplicate respectively). 
 
 My query:
 ```
