@@ -4,7 +4,10 @@ Question 1.
 
 When designing this schema, I prioritized the ease of answering key questions, such as finding which rooms are available on a given day for Hotel A or which finding the number of check-ins on a given day, with only a few joins. 
 
-I created separate tables for reservations and bookings (A guest can book several rooms within the same reservation but only one room per booking) and connected them with the reservation ID as the foreign key. Additionally, since rooms can be booked multiple times, there is a many-to-one relationship between the booking and room tables.
+I created separate tables for reservations and bookings (A guest can book several rooms within the same reservation but only one room per booking) and connected them with the reservation ID as the foreign key. Additionally, since rooms can be booked multiple times, there is a many-to-one relationship between the booking and room tables. 
+
+We can create an index on room numbers, and depending on how many hotels there are, index the cities the hotel are located for faster queries. 
+
 Instead of a room type table, I would establish a hotel grading/tiering system that is standardized across hotels as well as a room tiering system that is standardized within each hotel, which is more adaptable and scalable. Because this is a global chain, different brands within the chain will likely have different tiers depending on the hotel size, purpose, and demographic.  For example, a hotel like the Ritz-Carlton would be Tier 5 whilst a motel would be Tier 1, and a Tier 5 room would be a master suite while a Tier 1 room would be a basic room. By joining the hotel and and room tables on Hotel ID, you can look at the hotel tier and room tier side-by-side and instantly have a price estimate of a booking.
 
 Other Notes:
